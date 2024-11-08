@@ -1,5 +1,4 @@
-# exponentiation modulaire
-def modular_pow(base, exponent, modulus):
+def expoMod(base, exponent, modulus):
     result = 1
     base = base % modulus
     while exponent > 0:
@@ -9,26 +8,23 @@ def modular_pow(base, exponent, modulus):
         base = (base * base) % modulus
     return result
 
-def egcd(a, b):
+def inverseModulaire(a, b):
     if a == 0:
         return (b, 0, 1)
     else:
-        g, y, x = egcd(b % a, a)
+        g, y, x = inverseModulaire(b % a, a)
         return (g, x - (b // a) * y, y)
 
-# inverse multiplicatif de a modulo m
-def modinv(a, m):
-    g, x, y = egcd(a, m)
+def inverseMulti(a, m):
+    g, x, y = inverseModulaire(a, m)
     if g != 1:
-        raise Exception("Pas d'inverse multiplicatif")
+        raise Exception("Problème")
     else:
       return x % m
     
-# Convert an integer to a list of integers
-def int_to_str_list(x):
+def listeDeInt(x):
     if x < 0:
-        print("Pas possible!")
-        return False
+        return "Impossible"
     
     z = []
     while x > 0:
@@ -38,18 +34,15 @@ def int_to_str_list(x):
     return z
 
 
-def int_to_str(x):
-    x = int_to_str_list(x)
-    if x == False:
-        print("Pas possible!")
-        return False
+def intEnSTR(x):
+    x = listeDeInt(x)
     
-    res = ''.join(chr(a) for a in x)
-    return res
+    resultat = ''.join(chr(a) for a in x)
+    return resultat
 
 
 
-    # ClÃ© publique Question 1.2
+# Clé publique Question 1.2
 N = 172219604291138178634924980176652297603347655313304280071646410523864939208855547078498922947475940487766894695848119416017067844129458299713889703424997977808694983717968420001033168722360067307143390485095229367172423195469582545920975539060699530956357494837243598213416944408434967474317474605697904676813343577310719430442085422937057220239881971046349315235043163226355302567726074269720408051461805113819456513196492192727498270702594217800502904761235711809203123842506621973488494670663483187137290546241477681096402483981619592515049062514180404818608764516997842633077157249806627735448350463
 e = 173
 
@@ -60,6 +53,6 @@ phi_n = 172219604291138178634924980176652297603347655313304280071646410523864939
 # Cryptogramme 1.2
 C = 25782248377669919648522417068734999301629843637773352461224686415010617355125387994732992745416621651531340476546870510355165303752005023118034265203513423674356501046415839977013701924329378846764632894673783199644549307465659236628983151796254371046814548224159604302737470578495440769408253954186605567492864292071545926487199114612586510433943420051864924177673243381681206265372333749354089535394870714730204499162577825526329944896454450322256563485123081116679246715959621569603725379746870623049834475932535184196208270713675357873579469122917915887954980541308199688932248258654715380981800909
 
-d = modinv(e, phi_n)
-M = modular_pow(C, d, N)
-print(int_to_str(M))
+d = inverseMulti(e, phi_n)
+M = expoMod(C, d, N)
+print(intEnSTR(M))
